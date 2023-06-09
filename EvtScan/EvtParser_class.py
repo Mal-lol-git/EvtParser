@@ -1,18 +1,52 @@
 #-*- coding: utf-8 -*-
-import json
-import requests
+import json, os
+import win32evtlog as winevt
 
-from settings import *
+from setting import *
 
+#from setting import *
 
 class EvtParser():
 
-    def __init__(self):
-        super().__init__()
+	def __init__(self):
+		super().__init__()
 
-    def _JsonData(self, data):
-        try:
-            return data.json()
+	def _LocalEvtLogHandle(self, logtype):
+		try:
+			return winevt.OpenEventLog(None, logtype)
 
-        except Exception as e:
-            return False
+		except Exception as e:
+			return False
+
+	def _CustromEvtLogHandle(self, path):
+		try:
+			return winevt.OpenBackupEventLog(None, path)
+
+		except Exception as e:
+			return False
+
+	def _TotalNumEvtLog(self, handle):
+		try:
+			return winevt.GetNumberOfEventLogRecords(handle)
+
+		except Exception as e:
+			return False
+
+	def _FileList(self, path):
+		try:
+			for file in os.listdir(path):
+				if file.endswith(EVTEX):
+					EVENT_FILE.append(file)
+				if file.endswith(EVTEX2):
+					EVENT_FILE.append(file)
+
+		except Exception as e:
+			return e
+
+	def _JsonData(self, data):
+		try:
+			return data.json()
+
+		except Exception as e:
+			return False
+
