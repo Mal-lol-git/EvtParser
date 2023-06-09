@@ -2,7 +2,7 @@ import datetime
 
 from EvtScan.EvtParser_class import *
 
-path = r'C:\Users\DG\Desktop'
+path = ''
 
 evtparser = EvtParser()
 
