@@ -2,6 +2,17 @@ import datetime
 import win32evtlogutil
 from EvtScan.EvtParser_class import *
 from setting import *
+from EvtScan.csv import *
+
+RESULT = []
+
+def _Result(evt):
+	TimeGenerated = evt.TimeGenerated
+	EventID = evt.EventID
+	EventLog = filename[:-5]
+	SourceName = evt.SourceName
+	description = win32evtlogutil.SafeFormatMessage(evt, os.path.join(_PATH, filename))
+	return TimeGenerated, EventID, EventLog, SourceName, description
 
 _PATH = input("이벤트 로그 폴더 경로 : ")
 
@@ -14,14 +25,10 @@ for filename in EVENT_FILE:
 	print(filename, evtparser._TotalNumEvtLog(handle))
 	events = winevt.ReadEventLog(handle, flags,0)
 	for evt in events:
-		print('Time Generated :', evt.TimeGenerated)
-		print('EventID :', evt.EventID)
-		print('EventLog :', filename[:-5])
-		print('Source Name :', evt.SourceName)
-		description = win32evtlogutil.SafeFormatMessage(evt, os.path.join(_PATH, filename))
-		print('Data :', description)
+		RESULT.append(_Result(evt))
 
 
+EvtCsv(RESULT)
 
 
 '''
