@@ -1,5 +1,5 @@
 import datetime
-
+import win32evtlogutil
 from EvtScan.EvtParser_class import *
 from setting import *
 
@@ -14,7 +14,16 @@ for filename in EVENT_FILE:
 	print(filename, evtparser._TotalNumEvtLog(handle))
 	events = winevt.ReadEventLog(handle, flags,0)
 	for evt in events:
-		print(evt.StringInserts)
+		print('Time Generated :', evt.TimeGenerated)
+		print('EventID :', evt.EventID)
+		print('EventLog :', filename[:-5])
+		print('Source Name :', evt.SourceName)
+		description = win32evtlogutil.SafeFormatMessage(evt, os.path.join(_PATH, filename))
+		print('Data :', description)
+
+
+
+
 '''
 import win32evtlog as wevt
 import datetime
@@ -48,3 +57,5 @@ while True:
             elif str(evt.TimeGenerated)[:10] == str(day_ago):
                 break
 '''
+
+
