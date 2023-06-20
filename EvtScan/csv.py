@@ -1,14 +1,17 @@
 #-*- coding: utf-8 -*-
-import re
-import chardet
+import csv
 
-from urllib import parse
 from EvtParser.EvtParser_class import *
 
 
-def EvtCsv(keyword):
+def EvtCsv(RESULT):
     try:
-        print('csv')
+    	f_csv = open(CSV_PATH, 'w', encoding='utf-8-sig', newline='')
+    	w_csv = csv.writer(f_csv)
+    	for row in RESULT:
+    		w_csv.writer(row)
+    	f_csv.close()
+        print('csv_file save')
        
     except Exception as e:
         print(e)
