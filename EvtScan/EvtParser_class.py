@@ -25,6 +25,22 @@ class EvtParser():
 		except Exception as e:
 			return False
 
+	def _EvtLogFlags(self, flags):
+		try:
+			if 'start' == flags: 
+				return winevt.EVENTLOG_SEQUENTIAL_READ|winevt.EVENTLOG_BACKWARDS_READ
+				#return winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
+
+		except Exception as e:
+			return False
+
+	def _ReadEvtLog(self, handle, flags):
+		try:
+			return winevt.ReadEventLog(handle, flags, 0)
+
+		except Exception as e:
+			return False
+
 	def _TotalNumEvtLog(self, handle):
 		try:
 			return winevt.GetNumberOfEventLogRecords(handle)

@@ -11,7 +11,7 @@ def EvtCsv(RESULT):
 		for row in RESULT:
 			w_csv.writerow(row)
 		f_csv.close()
-		print('csv_file save')
+		print('csv_file_save')
 
 	except Exception as e:
 		print(e)

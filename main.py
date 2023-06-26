@@ -4,6 +4,11 @@ from EvtScan.EvtParser_class import *
 from setting import *
 from EvtScan.csv import *
 
+import datetime
+
+today = datetime.datetime.now().date()
+day_ago = today - datetime.timedelta(days=1)
+
 RESULT = []
 
 def _Result(evt):
@@ -17,52 +22,21 @@ def _Result(evt):
 _PATH = input("이벤트 로그 폴더 경로 : ")
 
 evtparser = EvtParser()
-
+count = 0
 evtparser._FileList(_PATH)
 for filename in EVENT_FILE:
-	handle = evtparser._CustromEvtLogHandle(os.path.join(_PATH, filename))
-	flags = winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
-	print(filename, evtparser._TotalNumEvtLog(handle))
-	events = winevt.ReadEventLog(handle, flags,0)
+	log_handle = evtparser._CustromEvtLogHandle(os.path.join(_PATH, filename))
+	flags = evtparser._EvtLogFlags('start')
+	print(filename, evtparser._TotalNumEvtLog(log_handle))
+	#events = evtparser._ReadEvtLog(log_handle, flags)
+	events = evtparser._ReadEvtLog(log_handle, flags)
 	for evt in events:
-		RESULT.append(_Result(evt))
-
+		if str(evt.TimeGenerated)[:10] == '2023-05-08':
+			RESULT.append(_Result(evt))
+		elif str(evt.TimeGenerated)[:10] == '2023-05-07':
+			break
 
 EvtCsv(RESULT)
 
-
-'''
-import win32evtlog as wevt
-import datetime
-import csv
-
-today = datetime.datetime.now().date()
-day_ago = today - datetime.timedelta(days=1)
-
-server = 'localhost'
-logtype = 'System'
-hand = wevt.OpenEventLog(server,logtype)
-flags = wevt.EVENTLOG_BACKWARDS_READ|wevt.EVENTLOG_SEQUENTIAL_READ
-total = wevt.GetNumberOfEventLogRecords(hand)
-
-while True:
-    events = wevt.ReadEventLog(hand, flags,0)
-    if events:
-        for evt in events:
-            if str(evt.TimeGenerated)[:10] == str(today):
-                print('Event ID:', evt.EventID)
-                data = evt.StringInserts
-
-                if data:
-                    print('Event Data: ', data)
-
-                    #for msg in data:
-                    #    print(msg)
-
-                print('*' * 100)
-
-            elif str(evt.TimeGenerated)[:10] == str(day_ago):
-                break
-'''
 
 
