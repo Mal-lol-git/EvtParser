@@ -4,9 +4,11 @@ import csv
 from EvtScan.EvtParser_class import *
 
 
-def EvtCsv(RESULT):
+def EvtCsv(RESULT, TODAY):
 	try:
-		f_csv = open(CSV_PATH, 'w', encoding='utf-8-sig', newline='')
+		save_filename = CSV_PATH+TODAY+'.csv'
+		print(TODAY)
+		f_csv = open(save_filename, 'w', encoding='utf-8-sig', newline='')
 		w_csv = csv.writer(f_csv)
 		for row in RESULT:
 			w_csv.writerow(row)

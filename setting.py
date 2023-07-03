@@ -17,8 +17,7 @@ _DST = input("이벤트 로그 마지막날짜 ex)9999-12-30 : ")
 EVTEX  = '.evtx'
 EVTEX2 = '.evt'
 
-
-CSV_PATH = r'C:\Users\DG\Desktop\test.csv'
+CSV_PATH = r'C:\Users\DG\Desktop\test_'
 #SAVE_PATH
 #HASH_SAVE_PATH      = '[PATH.txt]'
 #CSV_PATH            = '[PATH.csv]'

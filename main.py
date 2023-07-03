@@ -1,8 +1,9 @@
 import win32evtlogutil
+
+from datetime import datetime
 from EvtScan.EvtParser_class import *
 from setting import _PATH,_SRC,_DST
 from EvtScan.csv import *
-
 
 def _Result(evt):
 	TimeGenerated = evt.TimeGenerated
@@ -18,7 +19,12 @@ def _Scan():
 		events = evtparser._ReadEvtLog(log_handle, flags)
 		if events:
 			for evt in events:
-				if str(evt.TimeGenerated)[:10] <= _DST:
+				if count == 30000:
+					TODAY = datetime.now().strftime('%Y-%m-%d_%H-%M-%S.%f')
+					EvtCsv(RESULT,str(TODAY))
+					RESULT.clear()
+					count =0 
+				elif str(evt.TimeGenerated)[:10] <= _DST:
 					RESULT.append(_Result(evt))
 					count=count+1
 				elif str(evt.TimeGenerated)[:10] == _SRC:
@@ -35,4 +41,4 @@ for filename in EVENT_FILE:
 	print(filename, evtparser._TotalNumEvtLog(log_handle))
 	_Scan()
 
-EvtCsv(RESULT)
+#EvtCsv(RESULT)
