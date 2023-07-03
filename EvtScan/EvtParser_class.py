@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-import json, os
+import os
 import win32evtlog as winevt
 
 from setting import *
@@ -55,11 +55,11 @@ class EvtParser():
 
 		except Exception as e:
 			return e
-
+'''
 	def _JsonData(self, data):
 		try:
 			return data.json()
 
 		except Exception as e:
 			return False
-
+'''
