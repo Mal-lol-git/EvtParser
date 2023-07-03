@@ -4,8 +4,6 @@ import win32evtlog as winevt
 
 from setting import *
 
-#from setting import *
-
 class EvtParser():
 
 	def __init__(self):
@@ -28,8 +26,7 @@ class EvtParser():
 	def _EvtLogFlags(self, flags):
 		try:
 			if 'start' == flags: 
-				return winevt.EVENTLOG_SEQUENTIAL_READ|winevt.EVENTLOG_BACKWARDS_READ
-				#return winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
+				return winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
 
 		except Exception as e:
 			return False
