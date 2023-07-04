@@ -14,19 +14,25 @@ def _Result(evt):
 
 def _Scan(LOGTYPE):
 	count=0
+	SRC = datetime.strptime(_SRC, "%Y-%m-%d")
+	DST = datetime.strptime(_DST, "%Y-%m-%d")
+
 	while True:
 		events = evtparser._ReadEvtLog(log_handle, flags)
 		if events:
 			for evt in events:
-				if count == 30000:
-					EvtCsv(RESULT, LOGTYPE)
-					RESULT.clear()
-					count =0 
-				elif str(evt.TimeGenerated)[:10] <= _DST:
-					RESULT.append(_Result(evt))
-					count=count+1
-				elif str(evt.TimeGenerated)[:10] == _SRC:
+				if str(evt.TimeGenerated)[:10]:
+					if count == 30000:
+						EvtCsv(RESULT, LOGTYPE)
+						RESULT.clear()
+						count =0
+					if evt.TimeGenerated >= SRC:
+						RESULT.append(_Result(evt))
+						count=count+1
+		
+				else:
 					break
+	
 		else:
 			break
 
@@ -38,5 +44,6 @@ for filename in EVENT_FILE:
 	flags = evtparser._EvtLogFlags('start')
 	print(filename, evtparser._TotalNumEvtLog(log_handle))
 	_Scan(filename[:-5])
+	EvtCsv(RESULT,filename[:-5])
 
 #EvtCsv(RESULT)
