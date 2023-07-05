@@ -28,7 +28,6 @@ def _Scan(LOGTYPE):
 						count =0
 
 					if DST >= evt.TimeGenerated >= SRC:
-						print(DST,evt.TimeGenerated,SRC)
 						RESULT.append(_Result(evt))
 						count=count+1
 		
