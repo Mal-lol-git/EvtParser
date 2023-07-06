@@ -1,8 +1,11 @@
 #-*- coding: utf-8 -*-
 import os
+import csv
+import win32evtlogutil
 import win32evtlog as winevt
 
 from setting import *
+from setting import _CSV_PATH
 
 class EvtParser():
 
@@ -55,6 +58,57 @@ class EvtParser():
 
 		except Exception as e:
 			return e
+
+	def _Scan(self, handle, flags, logtype, filename):
+		count=0
+		#SRC = datetime.strptime(_SRC, "%Y-%m-%d")
+		#DST = datetime.strptime(_DST, "%Y-%m-%d %H:%M:%S")
+
+		while True:
+			events = self._ReadEvtLog(handle, flags)
+			if events:
+				for evt in events:
+					if str(evt.TimeGenerated)[:10]:
+						if count == 30000:
+							self.EvtCsv(RESULT, logtype)
+							RESULT.clear()
+							count =0
+
+						if DST >= evt.TimeGenerated >= SRC:
+							RESULT.append(self._Result(evt, filename))
+							count=count+1
+		
+					else:
+						break
+	
+			else:
+				if RESULT:
+					self.EvtCsv(RESULT,filename[:-5])
+					RESULT.clear()
+				break
+
+	def _Result(self, evt, filename):
+		TimeGenerated = evt.TimeGenerated
+		EventID = evt.EventID & 0x1FFFFFFF
+		EventLog = filename[:-5]
+		SourceName = evt.SourceName
+		description = win32evtlogutil.SafeFormatMessage(evt, filename[:-5])
+		return TimeGenerated, EventID, EventLog, SourceName, description
+
+	def EvtCsv(self, RESULT, LOGTYPE):
+		try:
+			TODAY = datetime.now().strftime('%Y-%m-%d_%H-%M-%S.%f')
+			SAVE_FILENAME = LOGTYPE+'_'+TODAY+'.csv'
+			SAVE_FILEPATH = os.path.join(_CSV_PATH, SAVE_FILENAME)
+			f_csv = open(SAVE_FILEPATH, 'w', encoding='utf-8-sig', newline='')
+			w_csv = csv.writer(f_csv)
+			for row in RESULT:
+				w_csv.writerow(row)
+			f_csv.close()
+			print('csv_file_save')
+
+		except Exception as e:
+			print(e)
 '''
 	def _JsonData(self, data):
 		try:
