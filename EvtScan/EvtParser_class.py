@@ -26,10 +26,9 @@ class EvtParser():
 		except Exception as e:
 			return False
 
-	def _EvtLogFlags(self, flags):
+	def _EvtLogFlags(self):
 		try:
-			if 'start' == flags: 
-				return winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
+			return winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
 
 		except Exception as e:
 			return False
@@ -103,7 +102,8 @@ class EvtParser():
 			for row in RESULT:
 				w_csv.writerow(row)
 			f_csv.close()
-			print('csv_file_save')
+			print('Save CSV...')
+			print('FileName : ', SAVE_FILENAME)
 
 		except Exception as e:
 			print(e)
