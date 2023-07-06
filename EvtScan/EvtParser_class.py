@@ -61,8 +61,6 @@ class EvtParser():
 
 	def _Scan(self, handle, flags, logtype, filename):
 		count=0
-		#SRC = datetime.strptime(_SRC, "%Y-%m-%d")
-		#DST = datetime.strptime(_DST, "%Y-%m-%d %H:%M:%S")
 
 		while True:
 			events = self._ReadEvtLog(handle, flags)
@@ -109,11 +107,3 @@ class EvtParser():
 
 		except Exception as e:
 			print(e)
-'''
-	def _JsonData(self, data):
-		try:
-			return data.json()
-
-		except Exception as e:
-			return False
-'''

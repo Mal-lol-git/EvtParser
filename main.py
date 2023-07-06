@@ -5,6 +5,7 @@ from setting import _PATH
 evtparser = EvtParser()
 
 evtparser._FileList(_PATH)
+
 for filename in EVENT_FILE:
 	log_handle = evtparser._CustromEvtLogHandle(os.path.join(_PATH, filename))
 	flags = evtparser._EvtLogFlags('start')

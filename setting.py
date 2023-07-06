@@ -25,13 +25,7 @@ DST = datetime.strptime(_DST, "%Y-%m-%d %H:%M:%S")
 #CSV PATH
 _CSV_PATH = input("File Save Path : ")
 
-#today = datetime.datetime.now().date()
-#day_ago = today - datetime.timedelta(days=1)
-
 #EVENTLOG_EX
 EVTEX  = '.evtx'
 EVTEX2 = '.evt'
 
-#SAVE_PATH
-#HASH_SAVE_PATH      = '[PATH.txt]'
-#CSV_PATH            = '[PATH.csv]'
