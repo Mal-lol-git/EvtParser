@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 import os
+import sys
 import csv
 import win32evtlogutil
 import win32evtlog as winevt
@@ -30,18 +31,14 @@ class EvtParser():
 				EventLog_Type = int(input("\n[EventLogPath]\n 1.Local EventLog\n 2.Custrom EventLog\n 3.Exit\n >> "))
 				if EventLog_Type == 1:
 					return r'C:\Windows\System32\winevt\Logs'
-
 				if EventLog_Type == 2:
 					return input("EVTLog Folder Path : ")
-
 				if EventLog_Type == 3:
-					exit()
-
+					sys.exit(0)
 				else:
 					print("\n[Error]\n Please Input Number '1-3'\n")
 					os.system('pause')
 					os.system('cls')
-
 			except Exception as e:
 				print("\n[Error]\n Please Input Number '1-3'\n")
 				os.system('pause')
@@ -56,21 +53,17 @@ class EvtParser():
 					_DST = '9999-12-31'
 					_DST = _DST + ' 23:59:59'
 					return datetime.strptime(_SRC, "%Y-%m-%d"), datetime.strptime(_DST, "%Y-%m-%d %H:%M:%S")
-
 				if EventLog_Date == 2:
 					_SRC = input("EVTLog Start Date ex)0001-01-01 : ")
 					_DST = input("EVTLog Last Date ex)9999-12-30 : ")
 					_DST = _DST + ' 23:59:59'
 					return datetime.strptime(_SRC, "%Y-%m-%d"), datetime.strptime(_DST, "%Y-%m-%d %H:%M:%S")
-
 				if EventLog_Date == 3:
-					exit()
-
+					sys.exit(0)
 				else:
 					print(" [Please Input Number '1-3']")
 					os.system('pause')
 					os.system('cls')
-
 			except Exception as e:
 				print(" [Please Input Number '1-3']")
 				os.system('pause')
@@ -79,42 +72,36 @@ class EvtParser():
 	def _EventLogSavePath(self):
 		try:
 			return input("[EventLog Save Path]\n File Save Path : ")
-
 		except Exception as e:
 			print(e)
 
 	def _LocalEvtLogHandle(self, logtype):
 		try:
 			return winevt.OpenEventLog(None, logtype)
-
 		except Exception as e:
 			print(e)
 
 	def _CustromEvtLogHandle(self, path):
 		try:
 			return winevt.OpenBackupEventLog(None, path)
-
 		except Exception as e:
 			print(e)
 
 	def _EvtLogFlags(self):
 		try:
 			return winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
-
 		except Exception as e:
 			print(e)
 
 	def _ReadEvtLog(self, handle, flags):
 		try:
 			return winevt.ReadEventLog(handle, flags, 0)
-
 		except Exception as e:
 			print(e)
 
 	def _TotalNumEvtLog(self, handle):
 		try:
 			return winevt.GetNumberOfEventLogRecords(handle)
-
 		except Exception as e:
 			print(e)
 
@@ -125,7 +112,6 @@ class EvtParser():
 					self.EVENT_FILE.append(file)
 				if file.endswith('.evt'):
 					self.EVENT_FILE.append(file)
-
 		except Exception as e:
 			print(e)
 
@@ -180,10 +166,10 @@ class EvtParser():
 			f_csv = open(SAVE_FILEPATH, 'w', encoding='utf-8-sig', newline='')
 			w_csv = csv.writer(f_csv)
 			print('Save CSV...')
+
 			for row in result:
 				w_csv.writerow(row)
 			f_csv.close()
 			print('CSV FileName : ', SAVE_FILENAME)
-
 		except Exception as e:
 			print(e)

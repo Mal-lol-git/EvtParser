@@ -1,6 +1,5 @@
 from EvtScan.EvtParser_class import *
 import ctypes
-import sys
 
 def is_admin():
 	try:
@@ -12,6 +11,7 @@ if is_admin():
 	try:
 		evtparser = EvtParser()
 		evtparser._Start()
+		os.system('pause')
 	except Exception as e:
 		print(e)
 else:
