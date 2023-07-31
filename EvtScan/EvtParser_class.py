@@ -28,7 +28,7 @@ class EvtParser():
 	def _EventLogPath(self):
 		while True:
 			try:
-				EventLog_Type = int(input("\n[EventLogPath]\n 1.Local EventLog\n 2.Custrom EventLog\n 3.Exit\n >> "))
+				EventLog_Type = int(input("\n[EventLogPath]\n 1.Local EventLog\n 2.Custom EventLog\n 3.Exit\n >> "))
 				if EventLog_Type == 1:
 					return r'C:\Windows\System32\winevt\Logs'
 				if EventLog_Type == 2:
@@ -47,7 +47,7 @@ class EvtParser():
 	def _EventLogDate(self):				
 		while True:
 			try:
-				EventLog_Date = int(input("[EventLogDate]\n 1.All Date\n 2.Specify Date\n 3.Exit\n >> "))
+				EventLog_Date = int(input("[EventLogDate]\n 1.All Date\n 2.Custom Date\n 3.Exit\n >> "))
 				if EventLog_Date == 1:
 					_SRC = '0001-01-01'
 					_DST = '9999-12-31'
