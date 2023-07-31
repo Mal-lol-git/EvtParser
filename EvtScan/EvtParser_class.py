@@ -81,42 +81,42 @@ class EvtParser():
 			return input("[EventLog Save Path]\n File Save Path : ")
 
 		except Exception as e:
-			return False
+			print(e)
 
 	def _LocalEvtLogHandle(self, logtype):
 		try:
 			return winevt.OpenEventLog(None, logtype)
 
 		except Exception as e:
-			return False
+			print(e)
 
 	def _CustromEvtLogHandle(self, path):
 		try:
 			return winevt.OpenBackupEventLog(None, path)
 
 		except Exception as e:
-			return False
+			print(e)
 
 	def _EvtLogFlags(self):
 		try:
 			return winevt.EVENTLOG_BACKWARDS_READ|winevt.EVENTLOG_SEQUENTIAL_READ
 
 		except Exception as e:
-			return False
+			print(e)
 
 	def _ReadEvtLog(self, handle, flags):
 		try:
 			return winevt.ReadEventLog(handle, flags, 0)
 
 		except Exception as e:
-			return False
+			print(e)
 
 	def _TotalNumEvtLog(self, handle):
 		try:
 			return winevt.GetNumberOfEventLogRecords(handle)
 
 		except Exception as e:
-			return False
+			print(e)
 
 	def _FileList(self, path):
 		try:
@@ -127,7 +127,7 @@ class EvtParser():
 					self.EVENT_FILE.append(file)
 
 		except Exception as e:
-			return e
+			print(e)
 
 	def _Scan(self, path, src, dst, csv_path):
 		count=0
