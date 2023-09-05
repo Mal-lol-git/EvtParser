@@ -12,6 +12,7 @@ class EvtParser():
 	def __init__(self):
 		super().__init__()
 		self._PATH = None
+		self._PATHTYPE = None
 		self.SRC = None
 		self.DST = None
 		self._CSV_PATH = None
@@ -20,19 +21,22 @@ class EvtParser():
 
 	def _Start(self):
 		print('*'*18 + '\n* EventLogParser *\n' + '*'*18)
-		self._PATH = self._EventLogPath()
+		self._PATH, self._PATHTYPE = self._EventLogPath()
 		self.SRC, self.DST = self._EventLogDate()
 		self._CSV_PATH = self._EventLogSavePath()
-		self._Scan(self._PATH, self.SRC, self.DST, self._CSV_PATH)
+		self._Scan(self._PATH, self._PATHTYPE, self.SRC, self.DST, self._CSV_PATH)
+
 
 	def _EventLogPath(self):
 		while True:
 			try:
 				EventLog_Type = int(input("\n[EventLogPath]\n 1.Local EventLog\n 2.Custom EventLog\n 3.Exit\n >> "))
 				if EventLog_Type == 1:
-					return r'C:\Windows\System32\winevt\Logs'
+					_EVTPATH = r'C:\Windows\System32\winevt\Logs'
+					return _EVTPATH, EventLog_Type
 				if EventLog_Type == 2:
-					return input("EVTLog Folder Path : ")
+					_EVTPATH = input("EVTLog Folder Path : ")
+					return _EVTPATH, EventLog_Type
 				if EventLog_Type == 3:
 					sys.exit(0)
 				else:
@@ -115,12 +119,15 @@ class EvtParser():
 		except Exception as e:
 			print(e)
 
-	def _Scan(self, path, src, dst, csv_path):
+	def _Scan(self, path, pathtype, src, dst, csv_path):
 		count=0
 		self._FileList(path)
 		for filename in self.EVENT_FILE:
 			_LOG_TYPE = filename[:-5]
-			_LOG_HANDLE = self._LocalEvtLogHandle(_LOG_TYPE)
+			if pathtype == 1:
+				_LOG_HANDLE = self._LocalEvtLogHandle(_LOG_TYPE)
+			if pathtype == 2:
+				_LOG_HANDLE = self._CustromEvtLogHandle(os.path.join(path,filename))
 			_FLAGS = self._EvtLogFlags()
 			print('*'*54)
 			print('Log FileName : ', filename)
@@ -154,8 +161,14 @@ class EvtParser():
 		EventID = evt.EventID & 0x1FFFFFFF
 		EventLog = filename[:-5]
 		SourceName = evt.SourceName
-		description = win32evtlogutil.SafeFormatMessage(evt, filename[:-5])
-		description2 = evt.StringInserts
+		try:
+			description = win32evtlogutil.SafeFormatMessage(evt, filename[:-5])
+		except Exception:
+			description = ''
+		if evt.StringInserts:
+			description2 = evt.StringInserts
+		else:
+			description2 = ''
 		return TimeGenerated, EventID, EventLog, SourceName, description, description2
 
 	def EvtCsv(self, result, logtype, path):

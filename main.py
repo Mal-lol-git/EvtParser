@@ -1,6 +1,6 @@
 from EvtScan.EvtParser_class import *
 import ctypes
-
+'''
 def is_admin():
 	try:
 		return ctypes.windll.shell32.IsUserAnAdmin()
@@ -17,3 +17,8 @@ if is_admin():
 else:
 	ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
 
+
+'''
+evtparser = EvtParser()
+evtparser._Start()
+os.system('pause')

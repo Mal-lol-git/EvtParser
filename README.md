@@ -1,5 +1,8 @@
 # EvtParser
-EventLog Parser
+EventLog Parser Config
+ - Local & Custom path
+ - All or Custom date
+ - Saving in csv file
 
 ## Requirements
 Windows
