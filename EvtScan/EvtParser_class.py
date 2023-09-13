@@ -169,6 +169,7 @@ class EvtParser():
 			description2 = evt.StringInserts
 		else:
 			description2 = ''
+		description2 = '||'.join(description2)
 		return TimeGenerated, EventID, EventLog, SourceName, description, description2
 
 	def EvtCsv(self, result, logtype, path):
