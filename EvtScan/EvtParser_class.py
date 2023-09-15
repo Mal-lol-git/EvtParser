@@ -18,11 +18,14 @@ class EvtParser():
 		self._CSV_PATH = None
 		self.EVENT_FILE = []
 		self.RESULT = []
+		self.EVENTID = None
+		self.Select_EventID = None
 
 	def _Start(self):
 		print('*'*18 + '\n* EventLogParser *\n' + '*'*18)
 		self._PATH, self._PATHTYPE = self._EventLogPath()
 		self.SRC, self.DST = self._EventLogDate()
+		self.Select_EventID = self._EventID()
 		self._CSV_PATH = self._EventLogSavePath()
 		self._Scan(self._PATH, self._PATHTYPE, self.SRC, self.DST, self._CSV_PATH)
 
@@ -71,7 +74,20 @@ class EvtParser():
 			except Exception as e:
 				print(" [Please Input Number '1-3']")
 				os.system('pause')
-				os.system('cls')			
+				os.system('cls')
+
+	def _EventID(self):
+		try:
+			Select_EventID = int(input("[Select EventID]\n 1.All EventID\n 2.Select EventID\n >> "))
+			if Select_EventID == 1:
+				Select_EventID = False
+				return Select_EventID
+			if Select_EventID == 2:
+				Select_EventID = True
+				self.EVENTID = input("[EventID]\n EventID ex) 7045, 7046\n >> ").replace(' ','').split(',')
+				return Select_EventID
+		except Exception as e:
+			print(e)			
 
 	def _EventLogSavePath(self):
 		try:
@@ -143,8 +159,13 @@ class EvtParser():
 								self.RESULT.clear()
 								count = 0
 							if dst >= evt.TimeGenerated >= src:
-								self.RESULT.append(self._Result(evt, filename))
-								count = count + 1
+								if self.Select_EventID:
+									if str(evt.EventID & 0x1FFFFFFF) in self.EVENTID:
+										self.RESULT.append(self._Result(evt, filename))
+										count = count + 1
+								else:
+									self.RESULT.append(self._Result(evt, filename))
+									count = count + 1
 						else:
 							break
 				else:
