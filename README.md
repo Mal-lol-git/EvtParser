@@ -2,7 +2,7 @@
 EventLog Parser Config
  - Local & Custom path
  - All or Custom date
- - Saving in csv file
+ - Saving in csv, db file
 
 ## Requirements
 Windows
