@@ -248,14 +248,12 @@ class EvtParser():
 		try:
 			con = sqlite3.connect(os.path.join(path, 'EVTDB.db'))
 			cur = con.cursor()
-			#tablename = re.sub(r"[^\uAC00-\uD7A30-9a-zA-Z]", '', logtype)
 			tablename = re.sub(r"[^0-35-9a-zA-Zㄱ-ㅣ가-힣]", '', logtype)
 			table_check_query = "select count(*) from sqlite_master where name='" + tablename + "'"
 			cur.execute(table_check_query)
 			if not bool(cur.fetchone()[0]):
 				query = "CREATE TABLE " + tablename + " (TimeGenerated text, TimeWritten text, EventID int, EventLog text, SourceName text, ComputerName text, Orgin_Description text, Description text)"
 				cur.execute(query)
-			#print(result)
 			cur.executemany('INSERT INTO ' + tablename + ' VALUES (?,?,?,?,?,?,?,?)', result)
 			con.commit()
 			con.close()
