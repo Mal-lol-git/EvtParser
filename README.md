@@ -20,7 +20,7 @@ Python file
 python main.py
  1.select EventLogPath
  2.select EventLogDate
- 3.select EventLogID
+ 3.select EventLogID3
  4.Result SavePath
  5.Result SaveFileType(CSV,DB)
 ```
