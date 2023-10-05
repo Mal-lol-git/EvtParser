@@ -18,4 +18,9 @@ python -m pip install -r requirements.txt
 Python file
 ```bash
 python main.py
+ 1.select EventLogPath
+ 2.select EventLogDate
+ 3.select EventLogID
+ 4.Result SavePath
+ 5.Result SaveFileType(CSV,DB)
 ```
